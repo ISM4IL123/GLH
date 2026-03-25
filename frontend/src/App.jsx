@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import CartPage from "./components/CartPage";
 import ProfilePage from "./components/ProfilePage";
 import DetailsPage from "./components/DetailsPage";
+import CheckoutPage from "./components/CheckoutPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(
@@ -57,6 +58,9 @@ export default function App() {
       {currentPage === "home" && <HomePage />}
       {currentPage === "cart" && <CartPage />}
       {currentPage === "profile" && <ProfilePage />}
+      {currentPage === "checkout" && (
+  <CheckoutPage goBack={goBack} />
+)}
       {currentPage === "details" && (
   <DetailsPage
     product={JSON.parse(localStorage.getItem("selectedProduct"))}

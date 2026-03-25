@@ -108,6 +108,7 @@ export default function HomePage() {
               <button
   onClick={() => {
     localStorage.setItem("selectedProduct", JSON.stringify(product));
+    localStorage.setItem("previousPage", "home");   // ✅ force return
     localStorage.setItem("currentPage", "details");
     window.location.reload();
   }}

@@ -72,6 +72,7 @@ export default function CartPage() {
               <button
                 onClick={() => {
                   localStorage.setItem("selectedProduct", JSON.stringify(product));
+                  localStorage.setItem("previousPage", "cart");   // ✅ force return
                   localStorage.setItem("currentPage", "details");
                   window.location.reload();
                 }}
@@ -82,6 +83,25 @@ export default function CartPage() {
 
               <button onClick={() => addOne(product.id)} style={btn}>+</button>
             </div>
+            <div style={{ textAlign: "center", marginTop: "30px" }}>
+  <button
+    onClick={() => {
+      localStorage.setItem("previousPage", "cart");
+      localStorage.setItem("currentPage", "checkout");
+      window.location.reload();
+    }}
+    style={{
+      backgroundColor: "#00b4d8",
+      color: "#fff",
+      border: "none",
+      padding: "12px 20px",
+      borderRadius: "5px",
+      cursor: "pointer"
+    }}
+  >
+    Go to Checkout
+  </button>
+</div>
           </div>
         ))}
       </div>

@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "_id": "1774345887500",
+      "name": "asd",
+      "email": "test@gmail.com",
+      "password": "$2b$10$ecUZ8OYL9cROkWkHUTOPRO5/eMRsJwPwqcqJIlfEzM92EpkShYq9e",
+      "createdAt": "2026-03-24T09:51:27.500Z"
+    }
+  ],
+  "products": [
+  { "id": "1001", "name": "Organic Apples", "price": 2.5, "stock": 100, "category": "Fruit", "description": "Fresh organic apples grown locally with no pesticides." },
+  { "id": "1002", "name": "Strawberries", "price": 3.5, "stock": 70, "category": "Fruit", "description": "Sweet seasonal strawberries picked daily." },
+  { "id": "1003", "name": "Blueberries", "price": 4.0, "stock": 65, "category": "Fruit", "description": "Juicy antioxidant-rich blueberries." },
+
+  { "id": "1004", "name": "Carrots", "price": 1.1, "stock": 130, "category": "Vegetables", "description": "Crunchy farm-grown carrots full of flavour." },
+  { "id": "1005", "name": "Potatoes", "price": 2.3, "stock": 180, "category": "Vegetables", "description": "Locally sourced potatoes perfect for roasting." },
+  { "id": "1006", "name": "Tomatoes", "price": 1.8, "stock": 110, "category": "Vegetables", "description": "Vine-ripened tomatoes bursting with flavour." },
+  { "id": "1007", "name": "Spinach", "price": 1.5, "stock": 90, "category": "Vegetables", "description": "Fresh leafy spinach packed with nutrients." },
+
+  { "id": "1008", "name": "Fresh Milk", "price": 1.8, "stock": 60, "category": "Dairy", "description": "Locally produced fresh milk." },
+  { "id": "1009", "name": "Cheddar Cheese", "price": 3.2, "stock": 55, "category": "Dairy", "description": "Mature cheddar with a rich flavour." },
+  { "id": "1010", "name": "Free-range Eggs", "price": 3.0, "stock": 50, "category": "Dairy", "description": "Eggs from free-range hens." },
+  { "id": "1011", "name": "Yoghurt", "price": 2.2, "stock": 75, "category": "Dairy", "description": "Creamy natural yoghurt." },
+
+  { "id": "1012", "name": "Chicken Breast", "price": 6.5, "stock": 45, "category": "Meat", "description": "Lean chicken breast from local farms." },
+  { "id": "1013", "name": "Beef Mince", "price": 7.0, "stock": 40, "category": "Meat", "description": "High-quality minced beef." },
+
+  { "id": "1014", "name": "Salmon Fillet", "price": 8.0, "stock": 25, "category": "Fish", "description": "Fresh salmon fillet rich in omega-3." },
+  { "id": "1015", "name": "Cod Fillet", "price": 7.5, "stock": 30, "category": "Fish", "description": "Freshly caught cod fillet." },
+
+  { "id": "1016", "name": "Local Honey", "price": 5.5, "stock": 30, "category": "Local Produce", "description": "Raw honey from local beekeepers." },
+  { "id": "1017", "name": "Farm Jam", "price": 4.5, "stock": 35, "category": "Local Produce", "description": "Homemade jam using seasonal fruits." },
+  { "id": "1018", "name": "Fresh Bread", "price": 2.0, "stock": 50, "category": "Local Produce", "description": "Baked fresh daily by local bakers." }
+]
+}

@@ -7,15 +7,40 @@ import CartPage from "./components/CartPage";
 import ProfilePage from "./components/ProfilePage";
 import DetailsPage from "./components/DetailsPage";
 import CheckoutPage from "./components/CheckoutPage";
+import ProducerDashboard from "./components/ProducerDashboard";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(
     localStorage.getItem("currentPage") || "login"
   );
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [isProducer, setIsProducer] = useState(!!localStorage.getItem("isProducer"));
+  const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem("isAdmin"));
 
   useEffect(() => {
     localStorage.setItem("currentPage", currentPage);
   }, [currentPage]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsLoggedIn(!!localStorage.getItem("token"));
+      setIsProducer(!!localStorage.getItem("isProducer"));
+      setIsAdmin(!!localStorage.getItem("isAdmin"));
+    };
+    
+    // Listen to custom login/logout events
+    window.addEventListener("login", handleStorageChange);
+    window.addEventListener("logout", handleStorageChange);
+    
+    // Also listen to storage changes from other tabs
+    window.addEventListener("storage", handleStorageChange);
+    
+    return () => {
+      window.removeEventListener("login", handleStorageChange);
+      window.removeEventListener("logout", handleStorageChange);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const goToLogin = () => setCurrentPage("login");
   const goToSignup = () => setCurrentPage("signup");
@@ -37,7 +62,10 @@ export default function App() {
       }}
     >
       <TopBar 
+  isLoggedIn={isLoggedIn}
+  isProducer={isProducer}
   onLogout={handleLogout}
+  goToLogin={goToLogin}
   goToHome={() => {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("home");
@@ -49,6 +77,10 @@ export default function App() {
   goToProfile={() => {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("profile");
+  }}
+  goToProducer={() => {
+    localStorage.setItem("previousPage", currentPage);
+    setCurrentPage("producer");
   }}
 />
       {currentPage === "login" && (
@@ -67,6 +99,7 @@ export default function App() {
     goBack={goBack}
   />
 )}
+      {currentPage === "producer" && <ProducerDashboard />}
     </div>
   );
 }

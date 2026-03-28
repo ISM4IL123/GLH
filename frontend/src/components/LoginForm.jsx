@@ -29,7 +29,7 @@ export default function LoginForm({ onLoginSuccess }) {
                 setIsError(false);
                 setMessage("Login successful!");
             
-                if (email.toLowerCase() === "admin@local.com") {
+                if (email.toLowerCase() === "admin@admin.com") {
                     localStorage.setItem("isAdmin", "true");
                 } else {
                     localStorage.removeItem("isAdmin");
@@ -37,6 +37,16 @@ export default function LoginForm({ onLoginSuccess }) {
 
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
+                
+                // Set producer status if user is approved producer
+                if (data.user?.isProducer) {
+                    localStorage.setItem("isProducer", "true");
+                } else {
+                    localStorage.removeItem("isProducer");
+                }
+                
+                // Dispatch custom event to update login state
+                window.dispatchEvent(new Event("login"));
 
                 setTimeout(() => onLoginSuccess(), 500);
             } else {

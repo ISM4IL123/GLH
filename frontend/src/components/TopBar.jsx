@@ -1,12 +1,24 @@
 import React from "react";
 import "./form.css";
 
-export default function TopBar({ onLogout, goToHome, goToCart, goToProfile }) {
+export default function TopBar({ isLoggedIn, isProducer, onLogout, goToLogin, goToHome, goToCart, goToProfile, goToProducer }) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("isProducer");
+    localStorage.removeItem("isAdmin");
+    // Dispatch custom event to update login state
+    window.dispatchEvent(new Event("logout"));
     if (onLogout) onLogout();
+  };
+
+  const handleAuthButton = () => {
+    if (isLoggedIn) {
+      handleLogout();
+    } else {
+      goToLogin();
+    }
   };
 
   return (
@@ -54,12 +66,18 @@ export default function TopBar({ onLogout, goToHome, goToCart, goToProfile }) {
           Account
         </span>
 
+        {isProducer && (
+          <span style={{ cursor: "pointer", color: "#00b894", fontWeight: "bold" }} onClick={goToProducer}>
+            Producer
+          </span>
+        )}
+
         <button
           className="form-submit"
           style={{ width: "auto", padding: "8px 15px" }}
-          onClick={handleLogout}
+          onClick={handleAuthButton}
         >
-          Logout
+          {isLoggedIn ? "Logout" : "Log In"}
         </button>
       </div>
     </div>

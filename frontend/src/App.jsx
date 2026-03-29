@@ -14,18 +14,36 @@ export default function App() {
     localStorage.getItem("currentPage") || "login"
   );
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
-  const [isProducer, setIsProducer] = useState(!!localStorage.getItem("isProducer"));
-  const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem("isAdmin"));
+  const [userStatus, setUserStatus] = useState(() => {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    return user?.status || null;
+  });
 
   useEffect(() => {
-    localStorage.setItem("currentPage", currentPage);
-  }, [currentPage]);
+  const updateAuth = () => {
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+
+    setIsLoggedIn(!!token);
+    setUserStatus(user?.status || null);
+  };
+
+  updateAuth();
+
+  window.addEventListener("login", updateAuth);
+  window.addEventListener("logout", updateAuth);
+
+  return () => {
+    window.removeEventListener("login", updateAuth);
+    window.removeEventListener("logout", updateAuth);
+  };
+}, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
       setIsLoggedIn(!!localStorage.getItem("token"));
-      setIsProducer(!!localStorage.getItem("isProducer"));
-      setIsAdmin(!!localStorage.getItem("isAdmin"));
+      const user = JSON.parse(localStorage.getItem("user") || "null");
+      setUserStatus(user?.status || null);
     };
     
     // Listen to custom login/logout events
@@ -63,7 +81,7 @@ export default function App() {
     >
       <TopBar 
   isLoggedIn={isLoggedIn}
-  isProducer={isProducer}
+  userStatus={userStatus}
   onLogout={handleLogout}
   goToLogin={goToLogin}
   goToHome={() => {

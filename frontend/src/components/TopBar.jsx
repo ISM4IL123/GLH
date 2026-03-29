@@ -1,24 +1,23 @@
 import React from "react";
 import "./form.css";
 
-export default function TopBar({ isLoggedIn, isProducer, onLogout, goToLogin, goToHome, goToCart, goToProfile, goToProducer }) {
+export default function TopBar({
+  isLoggedIn,
+  userStatus,
+  onLogout,
+  goToLogin,
+  goToHome,
+  goToCart,
+  goToProfile,
+  goToProducer
+}) {
+  const showProducerButton =
+    isLoggedIn && (userStatus === "producer" || userStatus === "admin");
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isProducer");
-    localStorage.removeItem("isAdmin");
-    // Dispatch custom event to update login state
+    localStorage.clear();
     window.dispatchEvent(new Event("logout"));
     if (onLogout) onLogout();
-  };
-
-  const handleAuthButton = () => {
-    if (isLoggedIn) {
-      handleLogout();
-    } else {
-      goToLogin();
-    }
   };
 
   return (
@@ -39,13 +38,30 @@ export default function TopBar({ isLoggedIn, isProducer, onLogout, goToLogin, go
         zIndex: 10,
       }}
     >
-      <div
-        style={{ fontSize: "1.5rem", fontWeight: "700", cursor: "pointer" }}
-        onClick={goToHome}
-      >
-        LOGO
+      {/* LEFT */}
+      <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
+        <div
+          style={{ fontSize: "1.5rem", fontWeight: "700", cursor: "pointer" }}
+          onClick={goToHome}
+        >
+          LOGO
+        </div>
+
+        {showProducerButton && (
+          <span
+            style={{
+              cursor: "pointer",
+              color: "#00b894",
+              fontWeight: "bold"
+            }}
+            onClick={goToProducer}
+          >
+            Producer
+          </span>
+        )}
       </div>
 
+      {/* RIGHT */}
       <div
         style={{
           display: "flex",
@@ -66,16 +82,10 @@ export default function TopBar({ isLoggedIn, isProducer, onLogout, goToLogin, go
           Account
         </span>
 
-        {isProducer && (
-          <span style={{ cursor: "pointer", color: "#00b894", fontWeight: "bold" }} onClick={goToProducer}>
-            Producer
-          </span>
-        )}
-
         <button
           className="form-submit"
           style={{ width: "auto", padding: "8px 15px" }}
-          onClick={handleAuthButton}
+          onClick={isLoggedIn ? handleLogout : goToLogin}
         >
           {isLoggedIn ? "Logout" : "Log In"}
         </button>

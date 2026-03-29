@@ -11,12 +11,12 @@ router.get("/", async (req, res) => {
 
 // POST new product
 router.post("/", async (req, res) => {
-  const { name, price, stock } = req.body;
+  const { name, price, stock, category, description, producer } = req.body;
   if (!name || price === undefined || stock === undefined) {
     return res.status(400).json({ success: false, message: "Missing fields" });
   }
 
-  const newProduct = await Product.save({ name, price, stock });
+  const newProduct = await Product.save({ name, price, stock, category, description, producer });
   res.status(201).json({ success: true, product: newProduct });
 });
 

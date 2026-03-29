@@ -124,7 +124,7 @@ router.post("/update-status", async (req, res) => {
         if (status === "approved") {
             const user = db.users.find(u => u._id === application.userId);
             if (user) {
-                user.isProducer = true;
+                user.status = "producer";
                 user.businessName = application.businessName;
                 user.businessType = application.businessType;
             }

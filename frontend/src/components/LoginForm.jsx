@@ -29,19 +29,18 @@ export default function LoginForm({ onLoginSuccess }) {
                 setIsError(false);
                 setMessage("Login successful!");
             
-                if (email.toLowerCase() === "admin@admin.com") {
-                    localStorage.setItem("isAdmin", "true");
-                } else {
-                    localStorage.removeItem("isAdmin");
-                }
-
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
                 
-                // Set producer status if user is approved producer
-                if (data.user?.isProducer) {
+                // Set status flags based on user status
+                if (data.user?.status === "admin") {
+                    localStorage.setItem("isAdmin", "true");
+                    localStorage.removeItem("isProducer");
+                } else if (data.user?.status === "producer") {
                     localStorage.setItem("isProducer", "true");
+                    localStorage.removeItem("isAdmin");
                 } else {
+                    localStorage.removeItem("isAdmin");
                     localStorage.removeItem("isProducer");
                 }
                 

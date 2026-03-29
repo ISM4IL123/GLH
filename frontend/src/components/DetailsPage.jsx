@@ -69,6 +69,7 @@ export default function DetailsPage({ product, goBack }) {
           <h3>{product.name}</h3>
           <p>{product.description}</p>
           <p>Category: {product.category}</p>
+          <p>Producer: {product.producer}</p>
           <p>Price: £{product.price.toFixed(2)}</p>
           <p>Stock: {product.stock}</p>
 

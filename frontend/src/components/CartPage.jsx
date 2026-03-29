@@ -62,6 +62,7 @@ export default function CartPage() {
           }}>
             <div>
               <h3>{product.name}</h3>
+              <p>Producer: {product.producer}</p>
               <p>£{product.price.toFixed(2)}</p>
               <p>Qty: {product.quantity}</p>
             </div>

@@ -60,27 +60,7 @@ export default function ProfilePage({ onNavigate }) {
             <p>Name: {user?.name}</p>
             <p>Email: {user?.email}</p>
 
-            <button
-                style={{
-                    marginTop: "30px",
-                    padding: "10px 20px",
-                    background: "#00b894",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "1rem",
-                    fontWeight: "bold"
-                }}
-                onClick={() => {
-                    localStorage.setItem("currentPage", "producer");
-                    window.location.href = "/";
-                }}
-            >
-                Go to Producer Dashboard
-            </button>
-
-            {!user?.isProducer && (
+            {user?.status !== "producer" && (
                 <>
                     <button
                         style={{

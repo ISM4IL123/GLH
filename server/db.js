@@ -15,11 +15,11 @@ if (!fs.existsSync(DB_FILE)) {
             {
                 users: [],
                 products: [
-                    { id: "1001", name: "Organic Apples", price: 2.5, stock: 100 },
-                    { id: "1002", name: "Free-range Eggs", price: 3.0, stock: 50 },
-                    { id: "1003", name: "Local Honey", price: 5.5, stock: 30 },
-                    { id: "1004", name: "Fresh Milk", price: 1.8, stock: 60 },
-                    { id: "1005", name: "Wholegrain Bread", price: 2.2, stock: 40 }
+                    { id: "1001", name: "Organic Apples", price: 2.5, stock: 100, producer: "producer2" },
+                    { id: "1002", name: "Free-range Eggs", price: 3.0, stock: 50, producer: "producer3" },
+                    { id: "1003", name: "Local Honey", price: 5.5, stock: 30, producer: "producer6" },
+                    { id: "1004", name: "Fresh Milk", price: 1.8, stock: 60, producer: "producer3" },
+                    { id: "1005", name: "Wholegrain Bread", price: 2.2, stock: 40, producer: "producer6" }
                 ]
             },
             null,

@@ -102,6 +102,7 @@ export default function HomePage() {
             }}>
               <h3>{product.name}</h3>
               <p>{product.category}</p>
+              <p>Producer: {product.producer}</p>
               <p>£{product.price.toFixed(2)}</p>
               <p>Stock: {product.stock}</p>
 

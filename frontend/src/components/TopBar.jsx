@@ -9,10 +9,11 @@ export default function TopBar({
   goToHome,
   goToCart,
   goToProfile,
-  goToProducer
+  goToProducer,
+  goToAdmin
 }) {
-  const showProducerButton =
-    isLoggedIn && (userStatus === "producer" || userStatus === "admin");
+  const showAdminButton = isLoggedIn && userStatus === "admin";
+  const showProducerButton = isLoggedIn && userStatus === "producer";
 
   const handleLogout = () => {
     localStorage.clear();
@@ -47,6 +48,18 @@ export default function TopBar({
           LOGO
         </div>
 
+        {showAdminButton && (
+          <span
+            style={{
+              cursor: "pointer",
+              color: "#e74c3c",
+              fontWeight: "bold"
+            }}
+            onClick={goToAdmin}
+          >
+            Admin
+          </span>
+        )}
         {showProducerButton && (
           <span
             style={{

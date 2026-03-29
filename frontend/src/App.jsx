@@ -8,6 +8,7 @@ import ProfilePage from "./components/ProfilePage";
 import DetailsPage from "./components/DetailsPage";
 import CheckoutPage from "./components/CheckoutPage";
 import ProducerDashboard from "./components/ProducerDashboard";
+import AdminApplications from "./components/AdminApplications";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(
@@ -96,6 +97,10 @@ export default function App() {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("profile");
   }}
+  goToAdmin={() => {
+    localStorage.setItem("previousPage", currentPage);
+    setCurrentPage("admin");
+  }}
   goToProducer={() => {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("producer");
@@ -117,7 +122,8 @@ export default function App() {
     goBack={goBack}
   />
 )}
-      {currentPage === "producer" && <ProducerDashboard />}
+{currentPage === "producer" && <ProducerDashboard />}
+      {currentPage === "admin" && <AdminApplications />}
     </div>
   );
 }

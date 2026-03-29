@@ -21,7 +21,7 @@ export default function AdminApplications() {
             const data = await response.json();
 
             if (response.ok && data.success) {
-                setApplications(data.applications || []);
+                setApplications((data.applications || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
             } else {
                 setIsError(true);
                 setMessage(data.message || "Error fetching applications");

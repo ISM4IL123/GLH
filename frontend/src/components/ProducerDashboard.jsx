@@ -31,7 +31,8 @@ export default function ProducerDashboard() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        setProducts(data.products || []);
+        const userName = user?.name;
+        setProducts((data.products || []).filter(p => p.producer === userName));
       }
     } catch (err) {
       console.error("Error fetching products:", err);

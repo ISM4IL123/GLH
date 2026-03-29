@@ -1,16 +1,23 @@
-# React + Vite
+to start the program you open termenal and cd into server and run "npm start" then cd into frontend and enter "npm run dev" and open the link
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+there are 4 premade logins 1 basic user 3 producers and 1 admin:
 
-Currently, two official plugins are available:
+basic user: 
+    email:user@user.com
+    Password:User1234
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+first producer:
+    email:producer@producer.com
+    password:Producer123
 
-## React Compiler
+second producer:
+    email:producer1@producer.com
+    password:Producer123
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+third producer:
+    email:producer2@producer.com
+    password:Producer123
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+admin:
+    email:Admin@admin.com
+    password:Admin123

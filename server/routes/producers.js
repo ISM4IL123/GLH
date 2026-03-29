@@ -160,6 +160,7 @@ router.post("/add-product", async (req, res) => {
         }
 
         const db = readDB();
+        const user = db.users.find(u => u._id === req.body.userId || u.name === req.body.producerName); // Simple auth check
         const newProduct = {
             id: Date.now().toString(),
             name,
@@ -167,6 +168,7 @@ router.post("/add-product", async (req, res) => {
             stock,
             category,
             description,
+            producer: user ? user.name : "unknown",
             createdAt: new Date().toISOString()
         };
 

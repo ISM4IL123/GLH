@@ -1,5 +1,22 @@
 import express from "express";
+import jwt from "jsonwebtoken";
 import { readDB, writeDB } from "../db.js";
+
+const verifyToken = (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (!token) {
+      return res.status(401).json({ success: false, message: "No token provided" });
+    }
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret");
+    req.user = decoded;
+    next();
+  } catch (err) {
+    console.error("Token verification error:", err.message);
+    return res.status(403).json({ success: false, message: "Invalid token" });
+  }
+};
 
 const router = express.Router();
 
@@ -148,152 +165,229 @@ router.post("/update-status", async (req, res) => {
 });
 
 // Add product by producer
-router.post("/add-product", async (req, res) => {
-    try {
-        const { name, price, stock, category, description } = req.body;
-
-        if (!name || !price || !stock || !category || !description) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "All fields required" 
-            });
-        }
-
-        const db = readDB();
-        const user = db.users.find(u => u._id === req.body.userId || u.name === req.body.producerName); // Simple auth check
-        const newProduct = {
-            id: Date.now().toString(),
-            name,
-            price,
-            stock,
-            category,
-            description,
-            producer: user ? user.name : "unknown",
-            createdAt: new Date().toISOString()
-        };
-
-        if (!db.products) db.products = [];
-        db.products.push(newProduct);
-        writeDB(db);
-
-        console.log(`✅ Product added: ${name}`);
-        res.status(201).json({
-            success: true,
-            message: "Product added successfully",
-            product: newProduct
-        });
-
-    } catch (err) {
-        console.error("Error adding product:", err);
-        res.status(500).json({ 
-            success: false, 
-            message: "Server error" 
-        });
+router.post("/add-product", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const { name, price, stock, category, description, image = '' } = req.body;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    
+    if (!user || user.status !== "producer") {
+      return res.status(403).json({ success: false, message: "Producer only" });
     }
+
+    if (!name || !price || !stock || !category || !description) {
+      return res.status(400).json({ success: false, message: "All fields required" });
+    }
+
+    const newProduct = {
+      id: Date.now().toString(),
+      name,
+      price,
+      stock,
+      category,
+      description,
+      image,
+      producer: user.name,
+      createdAt: new Date().toISOString()
+    };
+
+    if (!db.products) db.products = [];
+    db.products.push(newProduct);
+    writeDB(db);
+
+    console.log(`✅ Product added by ${user.name}: ${name}`);
+    res.status(201).json({
+      success: true,
+      message: "Product added successfully",
+      product: newProduct
+    });
+  } catch (err) {
+    console.error("Error adding product:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 });
 
-// Get producer's products
-router.get("/my-products", async (req, res) => {
-    try {
-        const db = readDB();
-        const products = db.products || [];
-
-        res.status(200).json({
-            success: true,
-            products
-        });
-
-    } catch (err) {
-        console.error("Error fetching products:", err);
-        res.status(500).json({ 
-            success: false, 
-            message: "Server error" 
-        });
+// Get producer's products only (auth required)
+router.get("/my-products", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
     }
+    
+    if (user.status !== "producer") {
+      return res.status(403).json({ success: false, message: "Producer access only" });
+    }
+
+    const products = (db.products || []).filter(p => p.producer === user.name);
+    console.log(`Producer ${user.name} fetched ${products.length} products`);
+
+    res.status(200).json({
+      success: true,
+      products
+    });
+  } catch (err) {
+    console.error("My products error:", err.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+  }
 });
 
 // Delete product
-router.delete("/product/:productId", async (req, res) => {
-    try {
-        const { productId } = req.params;
-
-        const db = readDB();
-        const productIndex = db.products?.findIndex(p => p.id === productId);
-
-        if (productIndex === -1 || productIndex === undefined) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "Product not found" 
-            });
-        }
-
-        db.products.splice(productIndex, 1);
-        writeDB(db);
-
-        console.log(`✅ Product deleted: ${productId}`);
-        res.status(200).json({
-            success: true,
-            message: "Product deleted successfully"
-        });
-
-    } catch (err) {
-        console.error("Error deleting product:", err);
-        res.status(500).json({ 
-            success: false, 
-            message: "Server error" 
-        });
+router.delete("/product/:productId", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const { productId } = req.params;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    
+    if (!user || user.status !== "producer") {
+      return res.status(403).json({ success: false, message: "Producer only" });
     }
+
+    const productIndex = db.products?.findIndex(p => p.id === productId && p.producer === user.name);
+
+    if (productIndex === -1 || productIndex === undefined) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Product not found" 
+      });
+    }
+
+    db.products.splice(productIndex, 1);
+    writeDB(db);
+
+    console.log(`✅ Product deleted: ${productId} by ${user.name}`);
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully"
+    });
+  } catch (err) {
+    console.error("Error deleting product:", err);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+  }
 });
 
-// Update product (stock and description)
-router.put("/product/:productId", async (req, res) => {
-    try {
-        const { productId } = req.params;
-        const { stock, description } = req.body;
-
-        if (stock === undefined || !description) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "Stock and description required" 
-            });
-        }
-
-        const db = readDB();
-        const product = db.products?.find(p => p.id === productId);
-
-        if (!product) {
-            return res.status(404).json({ 
-                success: false, 
-                message: "Product not found" 
-            });
-        }
-
-        product.stock = parseInt(stock);
-        product.description = description;
-        product.updatedAt = new Date().toISOString();
-
-        writeDB(db);
-
-        console.log(`✅ Product updated: ${productId}`);
-        res.status(200).json({
-            success: true,
-            message: "Product updated successfully",
-            product
-        });
-
-    } catch (err) {
-        console.error("Error updating product:", err);
-        res.status(500).json({ 
-            success: false, 
-            message: "Server error" 
-        });
+// Get loyalty points (auth required)
+router.get("/points", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
     }
+
+    const points = user.loyaltyPoints || 0;
+
+    res.status(200).json({
+      success: true,
+      loyaltyPoints: points
+    });
+  } catch (err) {
+    console.error("Error fetching points:", err.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+  }
 });
 
-// Checkout - reduce stock for purchased items
-router.post("/checkout", async (req, res) => {
+// Update product (partial update - only fields provided)
+router.put("/product/:productId", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const { productId } = req.params;
+    const updateData = req.body;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    
+    if (!user || user.status !== "producer") {
+      return res.status(403).json({ success: false, message: "Producer only" });
+    }
+
+    const product = db.products?.find(p => p.id === productId && p.producer === user.name);
+    if (!product) {
+      console.log("❌ Product not found for producer:", productId, user.name);
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    // Partial update - update any fields provided
+    const updatedFields = [];
+    if (updateData.stock !== undefined) {
+      product.stock = parseInt(updateData.stock);
+      updatedFields.push(`stock: ${product.stock}`);
+    }
+    if (updateData.description !== undefined) {
+      product.description = updateData.description;
+      updatedFields.push("description");
+    }
+
+    if (updatedFields.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields to update"
+      });
+    }
+
+    product.updatedAt = new Date().toISOString();
+
+    writeDB(db);
+    console.log(`✅ Product updated: ${productId} (${updatedFields.join(", ")})`);
+    res.status(200).json({
+      success: true,
+      message: `Updated: ${updatedFields.join(", ")}`,
+      product
+    });
+  } catch (err) {
+    console.error("❌ Error updating product:", err);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+  }
+});
+
+// Get order history (auth required)
+router.get("/order-history", verifyToken, async (req, res) => {
+  try {
+    const decoded = req.user;
+    const db = readDB();
+    const user = db.users.find(u => u._id === decoded.id);
+    
+    if (!user) {
+      return res.status(401).json({ success: false, message: "User not found" });
+    }
+
+    const orders = user.orders || [];
+    
+    res.status(200).json({
+      success: true,
+      orders
+    });
+  } catch (err) {
+    console.error("Error fetching order history:", err.message);
+    res.status(500).json({ 
+      success: false, 
+      message: "Server error" 
+    });
+  }
+});
+
+// Checkout - reduce stock for purchased items + award loyalty points
+router.post("/checkout", verifyToken, async (req, res) => {
     try {
-        const { items } = req.body;
+        const decoded = req.user;
+        const { items, deliveryType, address, paymentMethod } = req.body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
             return res.status(400).json({ 
@@ -303,6 +397,18 @@ router.post("/checkout", async (req, res) => {
         }
 
         const db = readDB();
+        const user = db.users.find(u => u._id === decoded.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        // Validate delivery if provided
+        if (deliveryType === "delivery" && (!address || !address.street || !address.city || !address.postcode)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Complete delivery address required" 
+            });
+        }
 
         // Validate all items exist and have sufficient stock before making changes
         for (const item of items) {
@@ -330,7 +436,54 @@ router.post("/checkout", async (req, res) => {
             }
         }
 
-        // All items valid, now reduce stock
+        // Calculate total spent for loyalty points (1 point per £) and prepare order
+        let totalSpent = 0;
+        const orderItems = [];
+        for (const item of items) {
+            const product = db.products.find(p => p.id === item.id);
+            const subtotal = product.price * item.quantity;
+            totalSpent += subtotal;
+            orderItems.push({
+                id: product.id,
+                name: product.name,
+                producer: product.producer,
+                price: product.price,
+                quantity: item.quantity,
+                subtotal: subtotal
+            });
+        }
+        // Add delivery fee
+        const deliveryFee = deliveryType === "delivery" ? 3.99 : 0;
+        totalSpent += deliveryFee;
+        const pointsEarned = Math.floor(totalSpent);
+
+
+        // Initialize orders array if needed
+        if (!user.orders) {
+            user.orders = [];
+        }
+
+        // Create new order entry
+        const newOrder = {
+            id: Date.now().toString(),
+            date: new Date().toISOString(),
+            deliveryType: deliveryType || "collection",
+            address: address || null,
+            paymentMethod: paymentMethod || "card",
+            items: orderItems,
+            deliveryFee: deliveryFee,
+            total: totalSpent
+        };
+        user.orders.unshift(newOrder); // Add to beginning for recency
+
+
+        // Award points (initialize if not exist)
+        if (user.loyaltyPoints === undefined) {
+            user.loyaltyPoints = 0;
+        }
+        user.loyaltyPoints += pointsEarned;
+
+        // Reduce stock
         const updatedItems = [];
         for (const item of items) {
             const product = db.products.find(p => p.id === item.id);
@@ -346,12 +499,18 @@ router.post("/checkout", async (req, res) => {
 
         writeDB(db);
 
-        console.log(`✅ Checkout completed - ${items.length} items purchased`);
+        console.log(`✅ Checkout completed by ${user.name}: £${totalSpent.toFixed(2)} spent (${deliveryType}, ${paymentMethod}), ${pointsEarned} loyalty points awarded (total: ${user.loyaltyPoints}), Order ID: ${newOrder.id}`);
         res.status(200).json({
             success: true,
             message: "Checkout successful",
-            updatedProducts: updatedItems
+            orderId: newOrder.id,
+            updatedProducts: updatedItems,
+            pointsEarned,
+            totalLoyaltyPoints: user.loyaltyPoints,
+            deliveryType,
+            total: totalSpent
         });
+
 
     } catch (err) {
         console.error("❌ Error during checkout:", err.message);

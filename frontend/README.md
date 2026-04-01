@@ -21,3 +21,18 @@ third producer:
 admin:
     email:Admin@admin.com
     password:Admin123
+
+## Adding Product Images
+
+1. **Replace placeholders**: Go to `src/assets/images/` - replace files like `1001-organic-apples.jsx` with your `1001-organic-apples.png` (same name).
+
+2. **For new products**: When adding via ProducerDashboard, set `image` field to kebab-case name (e.g., "fresh-milk").
+
+3. **Restart dev server**: `cd frontend && npm run dev` (hot reload may not pick up new images).
+
+4. **Image format**: PNG recommended, square/crop to 400x400px for best display.
+
+5. **Existing products**: Edit `server/users.json` manually: add `"image": "1001-organic-apples"` to products array.
+
+Images now display in HomePage (grid), DetailsPage (large), ProducerDashboard (thumbnail). Placeholders use React logo - replace with your PNGs!
+

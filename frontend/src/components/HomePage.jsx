@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { getImagePath } from '../utils/imageUtils.js';
+
+
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
@@ -100,7 +103,17 @@ export default function HomePage() {
               textAlign: "center",
               color: "#fff"
             }}>
-              <h3>{product.name}</h3>
+<h3>{product.name}</h3>
+<img 
+src={getImagePath(product.name, product?.image)} 
+                alt={product.name}
+                style={{width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px'}}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div style={{height: '120px', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#aaa', fontSize: '14px'}}>No image available</div>
               <p>{product.category}</p>
               <p>Producer: {product.producer}</p>
               <p>£{product.price.toFixed(2)}</p>

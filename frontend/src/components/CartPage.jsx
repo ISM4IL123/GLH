@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getImagePath } from '../utils/imageUtils.js';
 
 export default function CartPage() {
   const [cart, setCart] = useState([]);
@@ -55,12 +56,22 @@ export default function CartPage() {
             borderRadius: "10px",
             textAlign: "center",
             color: "#fff",
-            height: "220px",   // 🔥 FIXED SIZE
+            height: "220px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between"
           }}>
-            <div>
+            <img 
+              src={getImagePath(product.name, product?.image)} 
+              alt={product.name}
+              style={{width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px'}}
+              onError={(e) => { 
+                e.target.style.display = 'none'; 
+                e.target.nextSibling.style.display = 'flex'; 
+              }}
+            />
+            <div style={{width: '80px', height: '80px', background: '#333', borderRadius: '8px', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#aaa'}}>No image</div>
+            <div style={{flex: 1}}>
               <h3>{product.name}</h3>
               <p>Producer: {product.producer}</p>
               <p>£{product.price.toFixed(2)}</p>
@@ -68,43 +79,61 @@ export default function CartPage() {
             </div>
 
             <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
-              <button onClick={() => removeOne(product.id)} style={btn}>-</button>
+              <button 
+                onClick={() => removeOne(product.id)} 
+                aria-label={`Remove one ${product.name}`}
+                style={btn}
+              >
+                -
+              </button>
 
               <button
                 onClick={() => {
                   localStorage.setItem("selectedProduct", JSON.stringify(product));
-                  localStorage.setItem("previousPage", "cart");   // ✅ force return
+                  localStorage.setItem("previousPage", "cart");
                   localStorage.setItem("currentPage", "details");
                   window.location.reload();
                 }}
+                aria-label={`View details for ${product.name}`}
                 style={btn}
               >
                 Details
               </button>
 
-              <button onClick={() => addOne(product.id)} style={btn}>+</button>
+              <button 
+                onClick={() => addOne(product.id)} 
+                aria-label={`Add one ${product.name}`}
+                style={btn}
+              >
+                +
+              </button>
             </div>
-            <div style={{ textAlign: "center", marginTop: "30px" }}>
-  <button
-    onClick={() => {
-      localStorage.setItem("previousPage", "cart");
-      localStorage.setItem("currentPage", "checkout");
-      window.location.reload();
-    }}
-    style={{
-      backgroundColor: "#00b4d8",
-      color: "#fff",
-      border: "none",
-      padding: "12px 20px",
-      borderRadius: "5px",
-      cursor: "pointer"
-    }}
-  >
-    Go to Checkout
-  </button>
-</div>
           </div>
         ))}
+        {cart.length > 0 && (
+          <div style={{ textAlign: "center", marginTop: "20px" }}>
+            <button
+              onClick={() => {
+                localStorage.setItem("previousPage", "cart");
+                localStorage.setItem("currentPage", "checkout");
+                window.location.reload();
+              }}
+              aria-label={`Proceed to checkout with ${cart.length} items`}
+              style={{
+                backgroundColor: "#00b4d8",
+                color: "#fff",
+                border: "none",
+                padding: "15px 40px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontSize: "1.1rem",
+                fontWeight: "bold"
+              }}
+            >
+              Proceed to Checkout ({cart.length} items)
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -118,3 +147,4 @@ const btn = {
   borderRadius: "5px",
   cursor: "pointer"
 };
+

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './App.css';
 import TopBar from "./components/TopBar";
 import LoginPage from "./Login/LoginPage";
 import SignupPage from "./Sign up/SignupPage";
@@ -9,6 +10,8 @@ import DetailsPage from "./components/DetailsPage";
 import CheckoutPage from "./components/CheckoutPage";
 import ProducerDashboard from "./components/ProducerDashboard";
 import AdminApplications from "./components/AdminApplications";
+import OrderHistory from "./components/OrderHistory";
+import AccessibilitySettings from "./components/AccessibilitySettings";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState(
@@ -72,15 +75,10 @@ export default function App() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        width: "100%",
-        paddingTop: "80px",
-        background: "linear-gradient(135deg, #19106d, #03011d)",
-      }}
-    >
-      <TopBar 
+    <>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <header role="banner">
+        <TopBar 
   isLoggedIn={isLoggedIn}
   userStatus={userStatus}
   onLogout={handleLogout}
@@ -101,11 +99,24 @@ export default function App() {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("admin");
   }}
-  goToProducer={() => {
+goToProducer={() => {
     localStorage.setItem("previousPage", currentPage);
     setCurrentPage("producer");
   }}
+  goToAccessibility={() => {
+    localStorage.setItem("previousPage", currentPage);
+    setCurrentPage("accessibility");
+  }}
 />
+      </header>
+      <main id="main-content" role="main" tabIndex="-1"
+        style={{
+          minHeight: "calc(100vh - 80px)",
+          width: "100%",
+          paddingTop: "80px",
+          background: "linear-gradient(135deg, #19106d, #03011d)",
+        }}
+      >
       {currentPage === "login" && (
         <LoginPage onLoginSuccess={goToHome} goToSignup={goToSignup} />
       )}
@@ -123,7 +134,10 @@ export default function App() {
   />
 )}
 {currentPage === "producer" && <ProducerDashboard />}
-      {currentPage === "admin" && <AdminApplications />}
-    </div>
+{currentPage === "admin" && <AdminApplications />}
+      {currentPage === "orderhistory" && <OrderHistory />}
+      {currentPage === "accessibility" && <AccessibilitySettings />}
+      </main>
+    </>
   );
 }

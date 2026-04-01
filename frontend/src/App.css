@@ -1,46 +1,59 @@
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  width: 100%;
-}
-#root {
-  min-height: 100vh;
-  width: 100%;
-  background: linear-gradient(135deg, #131e30, #243b55);
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #00b4d8;
+  color: white;
+  padding: 8px;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 1000;
+  transition: top 0.3s;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Reduce motion for users preferring reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+/* Accessibility settings classes */
+.high-contrast {
+  filter: contrast(1.5) !important;
+}
+
+.high-contrast button, 
+.high-contrast input,
+.high-contrast label {
+  border: 2px solid #fff !important;
+  color: #000 !important;
+  background: #fff !important;
+}
+
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
+
+.invert-colors {
+  filter: invert(1) hue-rotate(180deg) !important;
+}
+
+/* High contrast mode support (optional enhancement) */
+@media (prefers-contrast: high) {
+  button, input {
+    border: 2px solid #000 !important;
   }
 }
 
-.card {
-  padding: 2em;
-}
 
-.read-the-docs {
-  color: #888;
-}

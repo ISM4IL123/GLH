@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { getImagePath } from '../utils/imageUtils.js';
+
+
 
 export default function ProducerDashboard() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -15,6 +18,7 @@ export default function ProducerDashboard() {
   const [editingProductId, setEditingProductId] = useState(null);
   const [editStock, setEditStock] = useState("");
   const [editDescription, setEditDescription] = useState("");
+  const [productImage, setProductImage] = useState(""); 
 
   useEffect(() => {
     fetchProducts();
@@ -31,8 +35,7 @@ export default function ProducerDashboard() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        const userName = user?.name;
-        setProducts((data.products || []).filter(p => p.producer === userName));
+        setProducts(data.products || []);
       }
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -56,7 +59,8 @@ export default function ProducerDashboard() {
           price: parseFloat(price),
           stock: parseInt(stock),
           category,
-          description
+          description,
+          image: productImage
         }),
       });
 
@@ -70,8 +74,9 @@ export default function ProducerDashboard() {
         setStock("");
         setCategory("");
         setDescription("");
+        setProductImage("");
         setShowAddProductForm(false);
-        fetchProducts();
+        fetchProducts(); 
       } else {
         setIsError(true);
         setMessage(data.message || "Error adding product");
@@ -302,7 +307,26 @@ export default function ProducerDashboard() {
                 borderRadius: "5px",
                 color: "#fff",
                 boxSizing: "border-box",
-                fontFamily: "inherit"
+              fontFamily: "inherit"
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: "15px" }}>
+            <label style={{ display: "block", marginBottom: "5px" }}>Image Filename</label>
+            <input
+              type="text"
+              value={productImage}
+              onChange={(e) => setProductImage(e.target.value)}
+              placeholder="e.g. organic-apples.jpg"
+              style={{
+                width: "100%",
+                padding: "10px",
+                background: "rgba(255,255,255,0.2)",
+                border: "1px solid rgba(255,255,255,0.3)",
+                borderRadius: "5px",
+                color: "#fff",
+                boxSizing: "border-box"
               }}
             />
           </div>
@@ -344,7 +368,17 @@ export default function ProducerDashboard() {
               >
                 {editingProductId === product.id ? (
                   <div>
-                    <h4>{product.name}</h4>
+<h4>{product.name}</h4>
+<img 
+src={getImagePath(product.name, product?.image)} 
+                alt={product.name}
+                style={{width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px'}}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div style={{width: '80px', height: '80px', background: '#333', borderRadius: '8px', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#aaa', fontSize: '12px'}}>No image</div>
                     <p><strong>Price:</strong> ${product.price.toFixed(2)}</p>
                     <p><strong>Category:</strong> {product.category}</p>
 

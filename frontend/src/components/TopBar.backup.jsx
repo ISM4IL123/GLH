@@ -10,8 +10,7 @@ export default function TopBar({
   goToCart,
   goToProfile,
   goToProducer,
-  goToAdmin,
-  goToAccessibility
+  goToAdmin
 }) {
   const showAdminButton = isLoggedIn && userStatus === "admin";
   const showProducerButton = isLoggedIn && userStatus === "producer";
@@ -47,34 +46,17 @@ export default function TopBar({
         zIndex: 10,
       }}
     >
-      {/* LEFT: Home, Accessibility, Admin/Producer */}
+      {/* LEFT */}
       <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
         <button
           onClick={goToHome}
           onKeyDown={(e) => handleKeyDown(e, goToHome, 'Go to home page')}
           aria-label="Go to home page"
-          style={{ cursor: "pointer", background: "none", border: "none", color: "#fff", fontSize: "inherit" }}
+          style={{ fontSize: "1.5rem", fontWeight: "700", cursor: "pointer", background: "none", border: "none", color: "#fff" }}
         >
-          Home
+          LOGO
         </button>
-        <button
-          onClick={goToAccessibility}
-          onKeyDown={(e) => handleKeyDown(e, goToAccessibility, 'Go to accessibility settings')}
-          aria-label="Go to accessibility settings page"
-          style={{ 
-            cursor: "pointer", 
-            background: "none", 
-            border: "none", 
-            color: "#fff", 
-            fontSize: "1rem",
-            fontWeight: "bold",
-            padding: "8px 12px",
-            borderRadius: "4px"
-          }}
-          title="Accessibility Settings"
-        >
-          Accessibility
-        </button>
+
         {showAdminButton && (
           <button
             onClick={goToAdmin}
@@ -111,7 +93,7 @@ export default function TopBar({
         )}
       </div>
 
-      {/* RIGHT: Cart, Order History, Account, Login/Logout */}
+      {/* RIGHT */}
       <div
         style={{
           display: "flex",
@@ -121,6 +103,39 @@ export default function TopBar({
         }}
       >
         <button
+          onClick={() => {
+            const settingsPanel = document.getElementById('accessibility-panel');
+            if (settingsPanel) {
+              settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
+            }
+          }}
+          aria-expanded={false}
+          aria-controls="accessibility-panel"
+          aria-label="Toggle accessibility settings"
+          style={{ 
+            cursor: "pointer", 
+            background: "none", 
+            border: "none", 
+            color: "#fff", 
+            fontSize: "1rem",
+            fontWeight: "bold",
+            padding: "8px 12px",
+            borderRadius: "4px"
+          }}
+          title="Accessibility Settings"
+        >
+          Accessibility
+        </button>
+        <button
+          onClick={goToHome}
+          onKeyDown={(e) => handleKeyDown(e, goToHome, 'Go to home page')}
+          aria-label="Go to home page"
+          style={{ cursor: "pointer", background: "none", border: "none", color: "#fff", fontSize: "inherit" }}
+        >
+          Home
+        </button>
+
+        <button
           onClick={goToCart}
           onKeyDown={(e) => handleKeyDown(e, goToCart, 'Go to cart')}
           aria-label="Go to cart"
@@ -128,7 +143,17 @@ export default function TopBar({
         >
           Cart
         </button>
-        {isLoggedIn && (
+
+        <button
+          onClick={goToProfile}
+          onKeyDown={(e) => handleKeyDown(e, goToProfile, 'Go to account')}
+          aria-label="Go to account"
+          style={{ cursor: "pointer", background: "none", border: "none", color: "#fff", fontSize: "inherit" }}
+        >
+          Account
+        </button>
+
+{isLoggedIn && (
           <button
             onClick={() => {
               localStorage.setItem("previousPage", localStorage.getItem("currentPage") || "home");
@@ -146,14 +171,7 @@ export default function TopBar({
             Order History
           </button>
         )}
-        <button
-          onClick={goToProfile}
-          onKeyDown={(e) => handleKeyDown(e, goToProfile, 'Go to account')}
-          aria-label="Go to account"
-          style={{ cursor: "pointer", background: "none", border: "none", color: "#fff", fontSize: "inherit" }}
-        >
-          Account
-        </button>
+
         <button
           className="form-submit"
           style={{ width: "auto", padding: "8px 15px" }}

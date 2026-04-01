@@ -1,8 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function ProfilePage({ onNavigate }) {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("Current user:", user);
+
+    // If not logged in, show auth prompt
+    if (!user) {
+        return (
+            <div style={{ 
+                color: "#fff", 
+                padding: "60px", 
+                maxWidth: "500px", 
+                margin: "0 auto",
+                textAlign: "center"
+            }}>
+                <h2 style={{ marginBottom: "30px" }}>Account</h2>
+                <p style={{ 
+                    fontSize: "1.1rem", 
+                    lineHeight: "1.6",
+                    marginBottom: "40px",
+                    background: "rgba(255,255,255,0.1)",
+                    padding: "20px",
+                    borderRadius: "10px"
+                }}>
+                    Sign up or log in to view your profile and order history. 
+                    Note: Account is not required to checkout!
+                </p>
+                <div style={{ display: "flex", gap: "20px", justifyContent: "center", flexWrap: "wrap" }}>
+                    <button
+                        style={{
+                            padding: "15px 30px",
+                            background: "#00b894",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontSize: "1.1rem",
+                            fontWeight: "600",
+                            boxShadow: "0 4px 15px rgba(0,184,148,0.4)",
+                            transition: "all 0.3s"
+                        }}
+                        onClick={() => {
+                            localStorage.setItem("previousPage", "profile");
+                            if (onNavigate) onNavigate("login");
+                            else window.location.href = "#login"; // fallback
+                        }}
+                        onMouseOver={(e) => e.target.style.transform = "translateY(-2px)"}
+                        onMouseOut={(e) => e.target.style.transform = "none"}
+                    >
+                        Log In
+                    </button>
+                    <button
+                        style={{
+                            padding: "15px 30px",
+                            background: "#6c5ce7",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                            fontSize: "1.1rem",
+                            fontWeight: "600",
+                            boxShadow: "0 4px 15px rgba(108,92,231,0.4)",
+                            transition: "all 0.3s"
+                        }}
+                        onClick={() => {
+                            localStorage.setItem("previousPage", "profile");
+                            if (onNavigate) onNavigate("signup");
+                            else window.location.href = "#signup"; // fallback
+                        }}
+                        onMouseOver={(e) => e.target.style.transform = "translateY(-2px)"}
+                        onMouseOut={(e) => e.target.style.transform = "none"}
+                    >
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const [loyaltyPoints, setLoyaltyPoints] = useState(0);
+    const [loadingPoints, setLoadingPoints] = useState(true);
     const [showProducerForm, setShowProducerForm] = useState(false);
     const [businessName, setBusinessName] = useState("");
     const [businessType, setBusinessType] = useState("");
@@ -10,6 +87,36 @@ export default function ProfilePage({ onNavigate }) {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Fetch loyalty points on mount
+    useEffect(() => {
+        const fetchPoints = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token || !user?.id) {
+                    setLoadingPoints(false);
+                    return;
+                }
+
+                const response = await fetch("http://localhost:5000/api/producers/points", {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setLoyaltyPoints(data.loyaltyPoints || 0);
+                }
+            } catch (err) {
+                console.error("Error fetching points:", err);
+            } finally {
+                setLoadingPoints(false);
+            }
+        };
+
+        fetchPoints();
+    }, []);
 
     const handleProducerSubmit = async (e) => {
         e.preventDefault();
@@ -57,8 +164,30 @@ export default function ProfilePage({ onNavigate }) {
     return (
         <div style={{ color: "#fff", padding: "60px" }}>
             <h2>Profile</h2>
-            <p>Name: {user?.name}</p>
-            <p>Email: {user?.email}</p>
+            <p>Name: {user?.name || 'N/A'}</p>
+            <p>Email: {user?.email || 'N/A'}</p>
+            <p>Loyalty Points: {loadingPoints ? "Loading..." : loyaltyPoints}</p>
+
+            <button
+                style={{
+                    marginTop: "30px",
+                    padding: "10px 20px",
+                    background: "#00b894",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontSize: "1rem",
+                    marginBottom: "20px"
+                }}
+                onClick={() => {
+                    localStorage.setItem("previousPage", "profile");
+                    localStorage.setItem("currentPage", "orderhistory");
+                    window.location.reload();
+                }}
+            >
+                View Order History
+            </button>
 
             {user?.status !== "producer" && (
                 <>
@@ -92,7 +221,7 @@ export default function ProfilePage({ onNavigate }) {
                             <h3>Producer Application</h3>
 
                             {message && (
-                                <div style={{
+                                <div id="producer-message" role="alert" aria-live="polite" style={{
                                     padding: "10px",
                                     marginBottom: "15px",
                                     borderRadius: "5px",
@@ -104,15 +233,17 @@ export default function ProfilePage({ onNavigate }) {
                             )}
 
                             <div style={{ marginBottom: "15px" }}>
-                                <label style={{ display: "block", marginBottom: "5px" }}>
+                                <label htmlFor="business-name" style={{ display: "block", marginBottom: "5px" }}>
                                     Business Name
                                 </label>
                                 <input
+                                    id="business-name"
                                     type="text"
                                     value={businessName}
                                     onChange={(e) => setBusinessName(e.target.value)}
                                     placeholder="Your business name"
                                     required
+                                    aria-required="true"
                                     style={{
                                         width: "100%",
                                         padding: "10px",
@@ -126,15 +257,17 @@ export default function ProfilePage({ onNavigate }) {
                             </div>
 
                             <div style={{ marginBottom: "15px" }}>
-                                <label style={{ display: "block", marginBottom: "5px" }}>
+                                <label htmlFor="business-type" style={{ display: "block", marginBottom: "5px" }}>
                                     Type of Products
                                 </label>
                                 <input
+                                    id="business-type"
                                     type="text"
                                     value={businessType}
                                     onChange={(e) => setBusinessType(e.target.value)}
                                     placeholder="e.g. Organic Vegetables, Dairy Products"
                                     required
+                                    aria-required="true"
                                     style={{
                                         width: "100%",
                                         padding: "10px",
@@ -148,15 +281,17 @@ export default function ProfilePage({ onNavigate }) {
                             </div>
 
                             <div style={{ marginBottom: "15px" }}>
-                                <label style={{ display: "block", marginBottom: "5px" }}>
+                                <label htmlFor="business-description" style={{ display: "block", marginBottom: "5px" }}>
                                     Business Description
                                 </label>
                                 <textarea
+                                    id="business-description"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Tell us about your business..."
                                     required
                                     rows="4"
+                                    aria-required="true"
                                     style={{
                                         width: "100%",
                                         padding: "10px",

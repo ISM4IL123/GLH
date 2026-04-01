@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { getImagePath } from '../utils/imageUtils.js';
+
+
 
 export default function DetailsPage({ product, goBack }) {
   const [amount, setAmount] = useState(() => {
@@ -66,7 +69,17 @@ export default function DetailsPage({ product, goBack }) {
           borderRadius: "10px",
           color: "#fff"
         }}>
-          <h3>{product.name}</h3>
+<h3>{product.name}</h3>
+<img 
+src={getImagePath(product.name, product?.image)} 
+                alt={product.name}
+                style={{width: '100%', height: '300px', objectFit: 'cover', borderRadius: '10px', marginBottom: '20px'}}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div style={{width: '100%', height: '300px', background: '#333', borderRadius: '10px', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#aaa'}}>No image available</div>
           <p>{product.description}</p>
           <p>Category: {product.category}</p>
           <p>Producer: {product.producer}</p>

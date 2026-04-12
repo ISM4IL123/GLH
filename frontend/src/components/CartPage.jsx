@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import { getImagePath } from '../utils/imageUtils.js';
 
 export default function CartPage() {
+  // Add class for CSS targeting
+  React.useEffect(() => {
+    document.body.classList.add('cart-page');
+    return () => document.body.classList.remove('cart-page');
+  }, []);
+
   const [cart, setCart] = useState([]);
 
   useEffect(() => {

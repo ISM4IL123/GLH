@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 export default function CheckoutPage({ goBack }) {
+  // Add class for CSS targeting
+  React.useEffect(() => {
+    document.body.classList.add('checkout-page');
+    return () => document.body.classList.remove('checkout-page');
+  }, []);
+
   const [cart, setCart] = useState([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");

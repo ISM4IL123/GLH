@@ -1,45 +1,64 @@
 import React, { useState, useEffect } from 'react';
 
 export default function AccessibilitySettings() {
-  const [highContrast, setHighContrast] = useState(false);
+  const [lightMode, setLightMode] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [largeText, setLargeText] = useState(false);
-  const [invertColors, setInvertColors] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
+  // Single useEffect: Load from localStorage and apply
   useEffect(() => {
-    // Load saved preferences
-    setHighContrast(localStorage.getItem('highContrast') === 'true');
-    setReducedMotion(localStorage.getItem('reducedMotion') === 'true');
-    setLargeText(localStorage.getItem('largeText') === 'true');
-    setInvertColors(localStorage.getItem('invertColors') === 'true');
-
-    // Apply immediately
-    applySettings();
+    try {
+      const getSetting = (key) => !!JSON.parse(localStorage.getItem(key) || 'false');
+      
+      const lm = getSetting('lightMode');
+      const rm = getSetting('reducedMotion');
+      const lt = getSetting('largeText');
+      
+      console.log('Loading accessibility settings:', { lightMode: lm, reducedMotion: rm, largeText: lt });
+      
+      setLightMode(lm);
+      setReducedMotion(rm);
+      setLargeText(lt);
+      setIsLoaded(true);
+      
+      // Apply immediately after setting state
+      setTimeout(() => applySettings(), 0);
+    } catch (error) {
+      console.warn('Failed to load accessibility settings:', error);
+      setIsLoaded(true);
+    }
   }, []);
 
+  // Apply settings when state changes (after load)
+  useEffect(() => {
+    if (isLoaded) {
+      applySettings();
+    }
+  }, [lightMode, reducedMotion, largeText, isLoaded]);
+
   const applySettings = () => {
-    document.body.classList.toggle('high-contrast', highContrast);
+    // Explicitly remove before toggle to clear stale
+    document.body.classList.remove('light-mode', 'reduced-motion', 'large-text');
+    document.body.classList.toggle('light-mode', lightMode);
     document.body.classList.toggle('reduced-motion', reducedMotion);
-    document.body.style.fontSize = largeText ? '1.2rem' : '';
-    document.body.classList.toggle('invert-colors', invertColors);
-    localStorage.setItem('highContrast', highContrast);
-    localStorage.setItem('reducedMotion', reducedMotion);
-    localStorage.setItem('largeText', largeText);
-    localStorage.setItem('invertColors', invertColors);
+    document.body.classList.toggle('large-text', largeText);
+    localStorage.setItem('lightMode', JSON.stringify(lightMode));
+    localStorage.setItem('reducedMotion', JSON.stringify(reducedMotion));
+    localStorage.setItem('largeText', JSON.stringify(largeText));
+    console.log('Accessibility settings applied:', { lightMode, reducedMotion, largeText });
   };
 
   const handleSettingChange = (setter, value) => {
     setter(value);
-    applySettings();
+    // applySettings() now automatic via useEffect
   };
 
   return (
-    <div style={{
+<div className="accessibility-settings" style={{
       maxWidth: '600px',
       margin: '0 auto',
       padding: '40px 20px',
-      background: 'rgba(0,0,0,0.9)',
-      color: '#fff',
       borderRadius: '10px',
       boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
       backdropFilter: 'blur(10px)'
@@ -52,11 +71,11 @@ export default function AccessibilitySettings() {
         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
           <input
             type="checkbox"
-            checked={highContrast}
-            onChange={(e) => handleSettingChange(setHighContrast, e.target.checked)}
-            id="high-contrast"
+            checked={lightMode}
+            onChange={(e) => handleSettingChange(setLightMode, e.target.checked)}
+            id="light-mode"
           />
-          High Contrast Mode
+          Light Mode
         </label>
 
         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
@@ -78,21 +97,34 @@ export default function AccessibilitySettings() {
           />
           Large Text
         </label>
-
-        <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={invertColors}
-            onChange={(e) => handleSettingChange(setInvertColors, e.target.checked)}
-            id="invert-colors"
-          />
-          Invert Colors
-        </label>
       </div>
 
       <div style={{ marginTop: '30px', paddingTop: '20px', borderTop: '1px solid rgba(255,255,255,0.2)', fontSize: '1rem', opacity: 0.8 }}>
         Keyboard: Tab to navigate, Enter/Space to activate. Screen reader friendly. Use Account or back navigation to leave.
       </div>
+
+      <button 
+        onClick={() => {
+          setLightMode(false);
+          setReducedMotion(false);
+          setLargeText(false);
+          ['lightMode', 'reducedMotion', 'largeText'].forEach(key => localStorage.removeItem(key));
+          document.body.classList.remove('light-mode', 'reduced-motion', 'large-text');
+          console.log('Accessibility settings reset');
+        }}
+        style={{
+          marginTop: '20px',
+          padding: '12px 24px',
+          background: '#ff6b6b',
+          color: 'white',
+          border: 'none',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          fontSize: '1rem'
+        }}
+      >
+        Reset All Settings
+      </button>
     </div>
   );
 }

@@ -67,9 +67,43 @@ export default function App() {
   const goToLogin = () => setCurrentPage("login");
   const goToSignup = () => setCurrentPage("signup");
   const goToHome = () => setCurrentPage("home");
-  const handleLogout = () => {
+const handleLogout = () => {
     goToLogin(); // redirect to login
   };
+
+  // Global accessibility settings - load on mount + listen for changes
+  useEffect(() => {
+    const getSetting = (key) => !!JSON.parse(localStorage.getItem(key) || 'false');
+    
+    const applyGlobalAccessibility = () => {
+      try {
+        const lightMode = getSetting('lightMode');
+        const reducedMotion = getSetting('reducedMotion');
+        const largeText = getSetting('largeText');
+        
+        document.body.classList.remove('light-mode', 'reduced-motion', 'large-text');
+        document.body.classList.toggle('light-mode', lightMode);
+        document.body.classList.toggle('reduced-motion', reducedMotion);
+        document.body.classList.toggle('large-text', largeText);
+        
+        console.log('Global accessibility applied:', { lightMode, reducedMotion, largeText });
+      } catch (error) {
+        console.warn('Could not load accessibility settings:', error);
+      }
+    };
+
+    applyGlobalAccessibility();
+
+    // Re-apply when localStorage changes (other tabs/components)
+    const handleStorageChange = (e) => {
+      if (e.key && ['lightMode', 'reducedMotion', 'largeText'].includes(e.key)) {
+        applyGlobalAccessibility();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
   const goBack = () => {
     setCurrentPage(localStorage.getItem("previousPage") || "home");
   };

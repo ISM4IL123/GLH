@@ -1,4 +1,4 @@
-to start the program you open termenal and cd into server and run "npm start" then cd into frontend and enter "npm run dev" and open the link
+to start the program you open termenal and cd into server and run "npm install" then run "npm start" then cd into frontend and run "npm install" then run "npm run dev" and open the link
 
 there are 4 premade logins 1 basic user 3 producers and 1 admin:
 

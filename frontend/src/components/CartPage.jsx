@@ -60,31 +60,33 @@ export default function CartPage() {
             background: "rgba(255,255,255,0.05)",
             padding: "20px",
             borderRadius: "10px",
-            textAlign: "center",
+            textAlign: "left",
             color: "#fff",
-            height: "220px",
+            height: "250px",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between"
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "20px"
           }}>
             <img 
               src={getImagePath(product.name, product?.image)} 
               alt={product.name}
-              style={{width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px'}}
+              style={{width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px'}}
               onError={(e) => { 
                 e.target.style.display = 'none'; 
                 e.target.nextSibling.style.display = 'flex'; 
               }}
             />
             <div style={{width: '80px', height: '80px', background: '#333', borderRadius: '8px', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#aaa'}}>No image</div>
-            <div style={{flex: 1}}>
-              <h3>{product.name}</h3>
-              <p>Producer: {product.producer}</p>
-              <p>£{product.price.toFixed(2)}</p>
-              <p>Qty: {product.quantity}</p>
+            <div style={{flex: 1, display: "flex", flexDirection: "column", justifyContent: "flex-start", minHeight: "100px", paddingLeft: "20px", lineHeight: "1.4"}}>
+              <h3 style={{margin: "0 0 8px 0", fontSize: "1.3em"}}>{product.name}</h3>
+              <p style={{margin: "0 0 4px 0", fontSize: "1em"}}>Producer: {product.producer}</p>
+              <p style={{margin: "0 0 4px 0", fontWeight: "bold", fontSize: "1.1em"}}>£{product.price.toFixed(2)}</p>
+              <p style={{margin: "0", fontSize: "1em", opacity: "0.9"}}>Qty: {product.quantity}</p>
             </div>
 
-            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+            <div style={{ display: "flex", gap: "10px", justifyContent: "center", alignSelf: "center" }}>
               <button 
                 onClick={() => removeOne(product.id)} 
                 aria-label={`Remove one ${product.name}`}

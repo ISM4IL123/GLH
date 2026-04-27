@@ -157,7 +157,112 @@ keyboard navigation: full tab-key operability , skip to content link, focus indi
 screen reader: aria lables, aria-live refions for dynamic content, role=”alert” for errors
 audit status: manual testing confirmed, automatic lighthouse audit not yet run-added to future tasks.
 
-ASSET LOGG
+content	source	Type of content	Purpose 	date	Licence type
+ 	https://alyvewellness.com/blogs/nutrition/an-apple-a-day-keeps-the-doctor-away-right 
+				All rights reserved
+ 	https://www.theargus.co.uk/news/25628533.british-winter-strawberries-grown-chichester-farm/ 
+			All rights reserved
+ 	https://www.amazon.co.uk/Bakoki%C2%AE-Premium-Organic-Blueberry-Fruits/dp/B08HRPR9F7 
+			All rights reserved
+ 	https://www.jamiesonbrothers.com/jamieson-brothersr-carrot-early-nantes-ii-vegetable-seeds-approx-5000-seeds 
+			All rights reserved
+ 	https://premierseedsdirect.com/product/potato-seeds-charlotte/ 
+			All rights reserved
+ 	https://mollyspantry.co.uk/products/cherry-vine-toms-300g 
+			All rights reserved
+ 	https://www.brandeastfortune.co.uk/product/spinach 
+			All rights reserved
+ 	Squash Honey Butternut - Salt Spring Seeds – Wildwood Outdoor Living
+			All rights reserved
+ 	https://www.amazon.co.uk/Vegetable-Plants-Cucumber-Petita-Full/dp/B09B6FJNVD 
+			All rights reserved
+ 	https://www.gardeningexpress.co.uk/traditional-sweet-pepper-collection-pack-of-six-plants-21813 
+			All rights reserved
+ 	https://www.thescottishsun.co.uk/news/16099780/tesco-banana-order-double-island-population/ 
+			All rights reserved
+ 	https://thefruitbowl.uk/product/farm-fresh-conference-pears-naturally-sweet/ 
+			All rights reserved
+ 	https://www.diy.com/departments/herb-garden-mint-1-litre-potted-plant-x-1/5057554187751_BQ.prd 
+			
+ 	https://theonlinegreengrocer.com/products/parsley 
+			All rights reserved
+ 	https://seedmegastore.co.uk/herb-coriander-calypso/ 
+			All rights reserved
+ 	https://www.meatsupermarket.com/products/chicken-breast-2kg 
+			All rights reserved
+ 	https://www.thecornishfoodboxcompany.co.uk/beef-mince-1kg.html 
+			All rights reserved
+ 	https://thecornishfishmonger.co.uk/products/royal-fillet-of-salmon 
+			All rights reserved
+
+ 	https://www.thecornishfoodboxcompany.co.uk/cornish-cod-fillet-300g.html 
+			All rights reserved
+ 	https://thehalalbutchers.co/product/lamb-chops/ 
+			All rights reserved
+ 	https://www.aussiemeat.hk/blogs/recipes-feed/how-to-prepare-lamb-kofta 
+			All rights reserved
+
+ 	https://x.com/paakittadnya/status/2033806228720390536 
+			All rights reserved
+
+ 	https://www.amazon.co.uk/Free-Range-Whole-Chicken-1-8kg/dp/B0B8B6KH7X 
+			All rights reserved
+
+ 	https://www.amazon.co.uk/Pepperoni-Expertly-Crafted-Flavours-Charcuterie/dp/B0CHK212TK 
+			All rights reserved
+ 	https://www.freee-foods.co.uk/recipes/gluten-free-chicken-nuggets/ 
+			all rights reserved
+ 	https://www.meatsupermarket.com/products/sirloin-steak-4x-8oz 
+			all rights reserved
+ 	https://www.heathrilesbbq.com/blogs/favorite-recipes/how-to-cook-glazed-chicken-wings-on-the-weber-kettle-grill 
+			All rights reserved
+
+ 	https://www.charlesfrazer.co.uk/shop/turkey-breast-mince/ 
+			All rights reserved
+
+ 	https://www.meatsupermarket.com/products/1-3-1-7kg-short-beef-ribs 
+			All rights reserved
+ 	https://www.ubereats.com/gb/store/idyn-pizza/zz7qAFVJWBO9sh1LFpc3Ow 
+			All rights reserved
+ 	https://www.milkandmore.co.uk/Fresh-Milk-Delivery/Channel-Island-Milk/Channel-Island-Gold-Foil-Fresh-Unhomogenised-Milk-in-Glass,-568ml,-1pt/p/2003511 
+			All rights reserved
+ 	https://www.nealsyarddairy.co.uk/products/the-cheddar-selection 
+			All rights reserved
+ 	https://northumbrianeggs.com/products/tray 
+			All rights reserved
+ 	https://www.amazon.co.uk/Premium-Yoghurt-Turkish-Strained-Container/dp/B0DR7KKP4W 
+			All rights reserved
+
+
+
+ 	https://savortherise.com/products/local-iowa-honey 
+			All rights reserved 
+ 	https://craigies.co.uk/product/craigies-strawberry-jam-440g/ 
+			All rights reserved
+ 	https://www.shopevoo.com/blogs/appetizers/fresh-baked-focaccia-with-garlic-olive-oil-sea-salt 
+			All rights reserved
+ 	https://instantpot.co.uk/israeli-couscous-and-lentils/ 
+				All rights reserved 
+
+ 	https://www.alibaba.com/showroom/red-lentils-whole-canada-whole-red-lentils-canada.html 
+			All rights reserved
+ 	https://groceries.morrisons.com/recipes/air-fryer-roasted-chickpeas/71V9LxL8gk9dMp3Z8zrKfm 
+			All rights reserved
+
+ 	https://www.chemistrystore.com/Soap_Making_Supplies-Cream_of_Tartar_Pot_Bitartrate.html 
+			All rights reserved
+
+ 	https://vicofoodbox.com/en/caputo-flour-essential-for-the-perfect-pizza-and-more.htm 
+			All rights reserved
+
+ 	https://www.noblefoods.ae/services/sunflower-oil/ 
+			All rights reserved
+
+ 	https://www.artisanoliveoilcompany.co.uk/products/franci-bio-organic-extra-virgin-olive-oil?variant=55597473988986 
+			All rights reserved
+
+					
+
  
 ASSET	Source	License	Compliance
 React framework	Meta / npm	MIT License	Open source

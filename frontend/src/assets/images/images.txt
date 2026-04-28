@@ -1,325 +1,47 @@
-Feedback Plan
-
-Purpose:
-Evaluate the performance and user compliance .Different users percieve, understand and take in information differently, technical users analyse code and security, non-technical users judge visual branding and ease of use.
-
-Audience segmentation:
-
-Group: Technical
-Names: Bob, Humza, James
-Roles: Senior Dev, QA, DevOps
-Focuses:security(GDPR), database integrity, api robustness, modularity, code legibility
-
-Group:Non-Technical
-Names: suraj,  josh,  jeff
-Role: Farm owner, student, teacher
-Focuses:Layout, Navigation, trust, visuals, ux
-
-Method evaluation:
-
-Method: Screen walkthrough
-Tool: OBS
-Evaluation: Large files
-Future:Compressed mp4
-
-Method: Questionare
-Tool: Microsoft forms
-evaluation:inefficient for large list of questions per tester. lacks automated analysation.
-Future: i would use surveymonkey 
-Method: Think aloud test
-Tool: audio recorder
-critique: Transcription was time consuming
-Future: automated transcription
-
-Demonstration Materials:
-
-Demo: layout
-File: GLH_Layout_demo.mp4
-Duration: 9 min
-what ir proves: all pages navigate to login to signup to home to filters to details to cart to checout to history to producer to admin to profile to accessibility
-Demo: Responsiveness
-File: GLH_Responsiveness_Demo.mp4
-Duration: 5min
-what it proves: css Grid minmax(220px, 1fr) adapts 1920px to 375
-
-Demo: Accessibility
-File: GLH_Accessibility_Demo.mp4
-Duration:4 min
-what it proves:light/dark mode, large text, reduced motion, tab-key navigation. WCAG 2.1 Level AA
-
-Demo: Backend/DB
-File: GLH_Backend_Demo.mp4
-duration: 5 min
-what it proves: users.json updates live: registration to aplication to aproval to product-add to checout. prototype only
-
-Demo: API integrity
-File GLH_API_Integrity_Demo.mp4
- Duration: 5min
-what it proves: invalid login regected, rate limit 429, admin route 403, insufficient stock 400,Postman tests:XSS sanitized
-
-detailed surveys and data analysis
-
-technical survey 104 questions (bob, humza, james)
-
-category: code legibility
-Questions: 1 – 24
-agreement percentage: 78%
-key tester evaluation:Humza (q12): “variable names like x inline styles should be btnStyle. Would not share with a buisness professional as-is.”
-
-category: security/GDPR
-questions 25 – 52
-agreement percentage: 92%
-Key tester evaluation: James (q28): “100% of testers idenntified JWT in localStorage as a production XSS risk. httpOnly cookies required.”
-
-category: database integrity
-questions: 53-78
-agreement Percentage: 88%
-key tester evaluation:bob(q88): “global error handle returns identical message for all 500s. makes production debugging imposible.”
-
-non-technical survey 73 questions (suraj,  josh,  jeff)
-category: first impressions
-question:1 - 12
-positive percentage: 68%
-key negative point: jeff(q3): “No image avalible looks unprofessional for a real shop.”
-
-category browsing
-questions: 13 – 28
-positive percentage 75%
-key negative point: josh(q34): “checkout form is long and intimidating just want apple pay.”
-
-category producer features
-questions: 45 – 58
-positive percentage: 48%
-key negative point: suraj (q51): “would never know i could sell here. ‘apply to producer’ button is hidden. needs a homepage banner.”
-category: accessibility
-questions 59 – 68
-positive precentage: 85%
-key negative point:jeff (q62): “large text is still too small. need a super size option.”
-
-category: trust
-questions: 69 – 73
-positive percentage: 58%
-key negative points: josh (q 71): “need padlock and secure checout badge befor entering real card.”
-
-
-
-record of feedback
-
-complete feedback log
-
+1.Introduction
  
-feature	tester	feedback	opinion	Severity
-database	bob	“JSON storage causes race conditions. Migrate to MongoDB/PostgreSQL.”
-	Negative	critical
-security	james	“JWT in local storage = XSS risk. Use httpOnly cookies.”	Negative	critical
-Checkout	Humza	“stock check and write not atomic. overselling possible”	Negative	critical
-testing	Bob	“zero test coverate. Add Jest+ supertest+ Playwright.”	Negative	High
-Navigation	Humza	“window.location.reload() defeats SPA purpose use react router.”	negative	Medium
-Sanitize	James	“sanitize strips script tags but should also strip onekick for dom xxs.”	Negative	Medium
-Accessibility	Bob	“aria labels and keyboard nav are well implemented	Positive	Low
-Middleware	Humza	“zod validation + middlewate chain is clean and maintainable.”	Positive	low
-Homepage	Jeff	“too bland. initial impression was boring and unwelcoming.”	Negative	High
-Images	Suraj	“missing product images makes the site look unfinished.”	Negative	Medium
-Checkout ux	Josh	“form has tooomany fields. no saved adress or payment options.”	Negative	High
-Producer cta	Suraj	“cannot find wher to apply as seller . buried in account page.”	Negative 	High
-Large text	Jeff	“even larger text mode is too small for my eyes.”	Negative	Medium
-Trust badges	Josh	“no SSL padlock visible. no secure checkout badge.”	Negative	Medium
-Category filters	Josh	“filtering works well and is intuitive.”	Positive	Low
-Cart	Suraj	“adding and removing items is straight forward.”	Positive	low
-Loyalty points	Jeff	“earning points is a nive incentive to return.”	Positive	Low
-Light mode	Suraj	“light mode option is helpful for daytime use.”	Positive	low
+This task is to gather feedback on my GLH(Greenfield Local Hub) prototype which is a full stack web aplication developed using react as a frontend and an express backend with JSON file based data storage. the website allows users to register and log in with role based access (user,producer,admin), brows and fiter products, manage their shopping cart stored in the local storage and complete a checkout process that generates orders and updates the stock levels.Producers are able to manage their own products through a dedicated dashboard while the admins can review and approve producers aplications.
 
-summary statistics
-total items: 18
-positive:16
-negative:11
-neutral:1
+feedback is an essential stage in the development process because it enables user acceptance testing (UAT) ensuring that the system meets both functional requirements and user expectations before further development. in industry this aligns with iterative and agile methods where software is continuously evaluated and improved based on real user input rather than assumptions made during the initial design by the developers. by exollecting sturctured feedback from technical and non technical users i can identify usability issues, functinal limitations and areas for improvement withing the current iteration of the prototype
+this feedback will be used to inform future development (e.g:Task 3b) cycles by highlighting issues such as usability in teh checkout , clarity of the interface and robustness of the producer and admin features ensuring the system evolves in line with the user needs and the original project requirements
 
-critical :3
-high: 5
-medium: 7
-low: 3
 
-legal, security, and ethical compliance
+2.Feedback Planning
 
-GDPR compliance
+Purpose and objectives
+the purpose of this feedback cycle is to evaluate how effective the GLH prototype is through the structured user acceptance testing (UAT) within an iterative development approach. the system includes key functional areas such as user authentication with role based accesss(user,producer,admin) product browsing with category filtering, a local storage based shopping cart , checkout process with order creation , producer/admin dashboards for product/aplication management. the feedback will focus on how well these features meet user needs and identify any usability or functional issues within the current implementation.
 
-data transparecy: users must accept terms and conditions befor registering
-data minimisation: only name, email and hashed password are collected. no payment card data is stored
-right to erasure: not yet implemented, identified as future requirement.
-consent: explicit consent obtained for feedback sessions via signed consent forms
+to ensure the feedback is measurable and actionable, the following smar objectives have been defined:
+•	usability: to determine whether 100% of users can successfully brows products, add items to the cart and complete checkout without any external help
+•	design and navigation: to achieve an average usability rating of atleast 80% regarding the clarity of navigating the top bar, product filtering and page structure
+•	functional reliability: to identify atleast three functional issues or inconsistencies across key features such as cart persistence, checkout validation or producer dashboard product management
+•	role based system effectiveness: to assess whether users clearly understand and can correctly interact with their assigned roles without confusion
+•	user experience feedback: to collect atleast 2 good improvement suggestions from each audience type within the feedback session to inform the next iteration
+these objectives ensure that both functional performance and user experience are evaluated in a structured and industry aligned manner reflecting the agile development and uat principles
 
-WCAG compliance
+Audience Profiles
+technical audience:
+the technical audience consists of softwar developers testers or technically skilled users who are able to ecaluate the functionality of the prototype. in this system they would be responsible for reviewing core implementation details such as the express backend routs, json-based data handling, authentication using jwt and client side state management using local storage.
+their focus will beo n the reliability, structure and effiecienct of the system.this includes assessing whether api endpoints such as product retrieval checkout processing and producer product management function correctly  under certain conditions. they will also evaluate data consistency between frontend and backend, how stock levels are updated druing checkout and whether role based access controll is correctly enforces across user,producer and admin features.
+technical users will also examine security and implementation quality, such as password hashing with bycrypt token based authentication flow and whether the server side validation is sufficient, their feedback will help identify bugs logic errors and areas where the system may not scale or behave predictably
 
-font resizing: accessibility panel offers large text mode(confirmed functional in the demo)
-colour contrast dark theme uses #19106d/#03011d background with #fff text(contrast ratio greater than 7:1) light mode toggles to #f5f5f5 with #000 text
-keyboard navigation: full tab-key operability , skip to content link, focus indicators
-screen reader: aria lables, aria-live refions for dynamic content, role=”alert” for errors
-audit status: manual testing confirmed, automatic lighthouse audit not yet run-added to future tasks.
+non technical audience:
+the non technical audience consists of end users(customers and producers) these users interact with the system without understanding its underlying code or architecture. in the context of this prototyope this includes users browsing and purchasing products as well as producers managing their own listing through the dashboard
+their focus will be on usability clarity and the overall user experience for example theiy will evaluate whether the product browsing interface is easy to navigate whether filtering by category is intuitive and if the checkout process is clear and straightforward. they will also assess whether key actions such as adding items to the cart, adjusting quantities and omcpleting an order is easy to understand without help.
+producers will specficaly docus on how easy it is to add edit and delete products in teh producer dashboard, while general users will focus on the simplicity of the shopping journey from product selection through to order confirmation. this feedback is essential for identifying usability issues that may not be visible from a technical perspective, such as confusing layouts, unclear button actions or unnecessary complexity in the user journey.
 
-content	source	Type of content	Purpose 	date	Licence type
- 	https://alyvewellness.com/blogs/nutrition/an-apple-a-day-keeps-the-doctor-away-right 
-				All rights reserved
- 	https://www.theargus.co.uk/news/25628533.british-winter-strawberries-grown-chichester-farm/ 
-			All rights reserved
- 	https://www.amazon.co.uk/Bakoki%C2%AE-Premium-Organic-Blueberry-Fruits/dp/B08HRPR9F7 
-			All rights reserved
- 	https://www.jamiesonbrothers.com/jamieson-brothersr-carrot-early-nantes-ii-vegetable-seeds-approx-5000-seeds 
-			All rights reserved
- 	https://premierseedsdirect.com/product/potato-seeds-charlotte/ 
-			All rights reserved
- 	https://mollyspantry.co.uk/products/cherry-vine-toms-300g 
-			All rights reserved
- 	https://www.brandeastfortune.co.uk/product/spinach 
-			All rights reserved
- 	Squash Honey Butternut - Salt Spring Seeds – Wildwood Outdoor Living
-			All rights reserved
- 	https://www.amazon.co.uk/Vegetable-Plants-Cucumber-Petita-Full/dp/B09B6FJNVD 
-			All rights reserved
- 	https://www.gardeningexpress.co.uk/traditional-sweet-pepper-collection-pack-of-six-plants-21813 
-			All rights reserved
- 	https://www.thescottishsun.co.uk/news/16099780/tesco-banana-order-double-island-population/ 
-			All rights reserved
- 	https://thefruitbowl.uk/product/farm-fresh-conference-pears-naturally-sweet/ 
-			All rights reserved
- 	https://www.diy.com/departments/herb-garden-mint-1-litre-potted-plant-x-1/5057554187751_BQ.prd 
-			
- 	https://theonlinegreengrocer.com/products/parsley 
-			All rights reserved
- 	https://seedmegastore.co.uk/herb-coriander-calypso/ 
-			All rights reserved
- 	https://www.meatsupermarket.com/products/chicken-breast-2kg 
-			All rights reserved
- 	https://www.thecornishfoodboxcompany.co.uk/beef-mince-1kg.html 
-			All rights reserved
- 	https://thecornishfishmonger.co.uk/products/royal-fillet-of-salmon 
-			All rights reserved
 
- 	https://www.thecornishfoodboxcompany.co.uk/cornish-cod-fillet-300g.html 
-			All rights reserved
- 	https://thehalalbutchers.co/product/lamb-chops/ 
-			All rights reserved
- 	https://www.aussiemeat.hk/blogs/recipes-feed/how-to-prepare-lamb-kofta 
-			All rights reserved
-
- 	https://x.com/paakittadnya/status/2033806228720390536 
-			All rights reserved
-
- 	https://www.amazon.co.uk/Free-Range-Whole-Chicken-1-8kg/dp/B0B8B6KH7X 
-			All rights reserved
-
- 	https://www.amazon.co.uk/Pepperoni-Expertly-Crafted-Flavours-Charcuterie/dp/B0CHK212TK 
-			All rights reserved
- 	https://www.freee-foods.co.uk/recipes/gluten-free-chicken-nuggets/ 
-			all rights reserved
- 	https://www.meatsupermarket.com/products/sirloin-steak-4x-8oz 
-			all rights reserved
- 	https://www.heathrilesbbq.com/blogs/favorite-recipes/how-to-cook-glazed-chicken-wings-on-the-weber-kettle-grill 
-			All rights reserved
-
- 	https://www.charlesfrazer.co.uk/shop/turkey-breast-mince/ 
-			All rights reserved
-
- 	https://www.meatsupermarket.com/products/1-3-1-7kg-short-beef-ribs 
-			All rights reserved
- 	https://www.ubereats.com/gb/store/idyn-pizza/zz7qAFVJWBO9sh1LFpc3Ow 
-			All rights reserved
- 	https://www.milkandmore.co.uk/Fresh-Milk-Delivery/Channel-Island-Milk/Channel-Island-Gold-Foil-Fresh-Unhomogenised-Milk-in-Glass,-568ml,-1pt/p/2003511 
-			All rights reserved
- 	https://www.nealsyarddairy.co.uk/products/the-cheddar-selection 
-			All rights reserved
- 	https://northumbrianeggs.com/products/tray 
-			All rights reserved
- 	https://www.amazon.co.uk/Premium-Yoghurt-Turkish-Strained-Container/dp/B0DR7KKP4W 
-			All rights reserved
+chosen feedback methods
+a mixed method approach has been selected to ensure that both quantitive and qualitative data is collected. this is important because the prototype includes functional systems as well as user experience elements.using multiple methods mporoves validity by allowing findings to be cross checked across different types of evidence.
 
 
 
- 	https://savortherise.com/products/local-iowa-honey 
-			All rights reserved 
- 	https://craigies.co.uk/product/craigies-strawberry-jam-440g/ 
-			All rights reserved
- 	https://www.shopevoo.com/blogs/appetizers/fresh-baked-focaccia-with-garlic-olive-oil-sea-salt 
-			All rights reserved
- 	https://instantpot.co.uk/israeli-couscous-and-lentils/ 
-				All rights reserved 
 
- 	https://www.alibaba.com/showroom/red-lentils-whole-canada-whole-red-lentils-canada.html 
-			All rights reserved
- 	https://groceries.morrisons.com/recipes/air-fryer-roasted-chickpeas/71V9LxL8gk9dMp3Z8zrKfm 
-			All rights reserved
+digital questionaire:
+a digital questionaire will be used for both technical and non technical usert to ollect structured feedback this method provides data through 1-5 ratings and optional written responses
 
- 	https://www.chemistrystore.com/Soap_Making_Supplies-Cream_of_Tartar_Pot_Bitartrate.html 
-			All rights reserved
+this method is appropriate because it allows consistend measurement of usability and satisfaction across all users. for example users can rate how easy it is to navicate between pages, clarity of checkout process and overall ease of completing a purchase
+this data directly supports evaluation of key system features such as the homepage, product filtering, cartpage functionality and checkoutpage. it also allows comparison of responses across different users to identify common usability issues
 
- 	https://vicofoodbox.com/en/caputo-flour-essential-for-the-perfect-pizza-and-more.htm 
-			All rights reserved
+observadion during user test:
 
- 	https://www.noblefoods.ae/services/sunflower-oil/ 
-			All rights reserved
-
- 	https://www.artisanoliveoilcompany.co.uk/products/franci-bio-organic-extra-virgin-olive-oil?variant=55597473988986 
-			All rights reserved
-
-					
-
- 
-ASSET	Source	License	Compliance
-React framework	Meta / npm	MIT License	Open source
-Vite build tool	Vite Team	MIT License 	Open source
-Express.js	Vite Team	MIT License	Open source
-Bootstrap	Not used	N/A	Pure CSS3 used instead
-API data	Internal JSON database	Original	No ecternal API dependency
-
-security measures:
-passwords hashed with bycrypt
-JWT signed with environment secret, 1 hour expiry
-rate limiting: 300 req/15 min global, 30req/15min autg
-helmet security headers, CORS restricted, Xpowered-by disabled
-input sanitization strips HTML tags (XSS prevention)
-Zod schema validation prevents malformed data
-
-evaluation and future planning
-KPI linkage 
-KPI	Evidence	Status
-Secure checkout	Humza confirmed visa validation blocks bad cards	PASS
-Role based access controll	Admin routes return 403 for non-admin users	PASS
-Input sanitization	XSS payload script alert(1) stripped	PASS
-Responsive design	Resizes correctly 1920px to 375	PASS
-Accessibility (WCAG AA)	Large text, keyboard navigation, aria lavels functional	PASS
-Producer onboarding clarity	Suraj could not find “apply” button	FAIL
-Checout conversion	Joash found form”intimidating”	PARTIAL
-Visual brand appeal	Jeff called it “bland”	FAIL
-Production database readiness	100% of technical testers rejected JSON file	FAIL
-Test coverage	Zero automated tests exist	FAIL
-
-Microsoft forms: it allowed easy distribution to 6 testers, analysing 104 technical questions times 3 testers manually was inefficient and error prone, it lacked automated analysation, sentiment analysation and branched logic. in the future i will use surveymonkey or build a custom sql-backed survey dashboard to generate auto kpi reports and visualise response distributions instantly
-
-OBS studio: produced high quality screen recordings but generated 500mb+ files, in the future i should use lower buitrate or builtin browser recording apis
-
-GLH version 2.0 
-
-Priority	Improvement	Source Feedback	Technical Detail
-Critical	Migrate to MongoDB/PostgreSQL	Bob:”json causes race conditions”	Add Mongoose ORM, connection pooling, atomic transaction for checkout
-Critical	httpOnly cookie authentication	James: “JWT in local storage = XSS risk”	Replace localstorage.setitem(“token”) with res.cookie (“token”,...,{httpOnly: true, secure:true})
-Critical	Atomic checkout transaction	Humza:”stock check and write not atomic”	Implement pessimistic locking or MongoDB transactions around stock validation and decrement
-High	Add comprehensive test suite	Bob: “zero test coverage”	Jest for unit tests, supertests for api integration tests, playwright for R2R checkout journey
-High	Simplify checjout + saved adresses	Josh “form is intimidating”	Add adress book,apple pay/paypal, one click checkout for returning users
-High	“sell with us” homepage CTA	Suraj”apply button is hidden”	Add prominent banner above product grid with href=”#profile”
-High	Vibrant visual rebrand	Jeff: “too bland and boring”	Add hero image carousel, brighter accent colours (#ff6b6b, #ffd93d) animated transitions
-Medium	Super-scale accessibility	Jeff: “large text still too small”	Add 200% zoom mode (font-size: 2rem base) and audio narrator for product descriptions
-Medium	Trustbadges on checkout	Josh: “need padlock badge”	Add norton.McAfee-style badge row, SSL indicator, “pci compliant” footer
-
-Medium	Image upload for producers	Suraj:”missing images look unprofessional”	Add multer middleware for multipart/form-data image uploads to /uploads
-Low	Dark/light mode polish	General feeback	Add smooth CSS transition between themes, remember preference by user ID not just localstorage
-
-
-Conclusion
-
-the GLH prototype successfully demonstrates functional prodiciency in core marketplace features and meets WCAG 2.1 Level AA accessibility standards, however 3 critical blockers prevent production readiness: the JSON file database, JWT in localStorage and lack of atomic checkout transactions, From a user perspective, producer onboarding visibility and checout simplicity are the highest impact ux improvements. by implementing the version 2.0 plan above GLH can progress from prototype to beta launch within 13 weeks.
-
-Asset log reference:All assets used in this prototype are ducumented for traceability , the assets that are not open-source are used under “educational fair use” for the purpose of this assessment.
-
-feedback consent: all 6 testers provided signed consent forms and quotes used with permission.
-
-The next review is in 2 weeks time

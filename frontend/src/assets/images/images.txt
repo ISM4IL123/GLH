@@ -2,7 +2,7 @@
  
 This task is to gather feedback on my GLH(Greenfield Local Hub) prototype which is a full stack web aplication developed using react as a frontend and an express backend with JSON file based data storage. the website allows users to register and log in with role based access (user,producer,admin), brows and fiter products, manage their shopping cart stored in the local storage and complete a checkout process that generates orders and updates the stock levels.Producers are able to manage their own products through a dedicated dashboard while the admins can review and approve producers aplications.
 
-feedback is an essential stage in the development process because it enables user acceptance testing (UAT) ensuring that the system meets both functional requirements and user expectations before further development. in industry this aligns with iterative and agile methods where software is continuously evaluated and improved based on real user input rather than assumptions made during the initial design by the developers. by exollecting sturctured feedback from technical and non technical users i can identify usability issues, functinal limitations and areas for improvement withing the current iteration of the prototype
+feedback is an essential stage in the development process because it enables user acceptance testing (UAT) ensuring that the system meets both functional requirements and user expectations before further development. in industry this aligns with iterative and agile methods where software is continuously evaluated and improved based on real user input rather than assumptions made during the initial design by the developers. by collecting sturctured feedback from technical and non technical users i can identify usability issues, functional limitations and areas for improvement withing the current iteration of the prototype
 this feedback will be used to inform future development (e.g:Task 3b) cycles by highlighting issues such as usability in teh checkout , clarity of the interface and robustness of the producer and admin features ensuring the system evolves in line with the user needs and the original project requirements
 
 
@@ -22,7 +22,7 @@ these objectives ensure that both functional performance and user experience are
 Audience Profiles
 technical audience:
 the technical audience consists of softwar developers testers or technically skilled users who are able to ecaluate the functionality of the prototype. in this system they would be responsible for reviewing core implementation details such as the express backend routs, json-based data handling, authentication using jwt and client side state management using local storage.
-their focus will beo n the reliability, structure and effiecienct of the system.this includes assessing whether api endpoints such as product retrieval checkout processing and producer product management function correctly  under certain conditions. they will also evaluate data consistency between frontend and backend, how stock levels are updated druing checkout and whether role based access controll is correctly enforces across user,producer and admin features.
+their focus will be on the reliability, structure and effiecienct of the system.this includes assessing whether api endpoints such as product retrieval checkout processing and producer product management function correctly  under certain conditions. they will also evaluate data consistency between frontend and backend, how stock levels are updated druing checkout and whether role based access controll is correctly enforces across user,producer and admin features.
 technical users will also examine security and implementation quality, such as password hashing with bycrypt token based authentication flow and whether the server side validation is sufficient, their feedback will help identify bugs logic errors and areas where the system may not scale or behave predictably
 
 non technical audience:
@@ -40,8 +40,90 @@ a mixed method approach has been selected to ensure that both quantitive and qua
 digital questionaire:
 a digital questionaire will be used for both technical and non technical usert to ollect structured feedback this method provides data through 1-5 ratings and optional written responses
 
-this method is appropriate because it allows consistend measurement of usability and satisfaction across all users. for example users can rate how easy it is to navicate between pages, clarity of checkout process and overall ease of completing a purchase
+this method is appropriate because it allows consistent measurement of usability and satisfaction across all users. for example users can rate how easy it is to navigate between pages, clarity of checkout process and overall ease of completing a purchase
 this data directly supports evaluation of key system features such as the homepage, product filtering, cartpage functionality and checkoutpage. it also allows comparison of responses across different users to identify common usability issues
 
-observadion during user test:
+observation during user test:
+observation will primarily be used with non technical users while they interact with the system. The users will be given tasks such as browsing products, adding items to the cart and completing the checkout process while their interactions are observed and recorded.
+This method is useful because it captures real user behaviour rather than relying solely on self reported feedback, for example hesitation when using the category filter or confusion during checkout steps may indicate usability issues that users might not explicitly mention in a questionaire .
+This is particularly relevant for evaluating the user journey through the homepage, deails page, cart page and checkout page components.
 
+Structured error log checklist:
+For technical users a structured checklist and error log will be used to capture functional feedback. This will include testing core backend and frontend interactions (e.g. api responses from product and authentication roles, correct stock updates during checkout, role based accesss control for producer and admin features)
+This method is appropriate because it ensures feedback is specigic, reproducible and actionable.it aligns with industry practice in system testing where developers document bugs with clear steps to reproduce, expected outcomes and actual results.
+
+Screen recording testing:
+Screen recordings will be used during both technical and non technical testing sessions to provide visual evidence of system behaviour. Users will complete defined tasks while their interactions are recorded.
+This is useful for later analysis because It allows review of user behaviour in detail, particularly where issues occur during navigation, checkout or product management. It also support identification of ui/ux friction points that may not be captured in written feedback alone.
+
+Justification summary:
+This combination of methods ensures triangulation of data by collecting 1-5 ratings, opinions, behavioural evidence and technical validation. This approach reflects industry standard user acceptance testing within an iterative development cycle where multiple feedback sources are used to refine the system and prioritise improvements for the next development.
+
+3.matarials for demonstrations
+Demonstration for technical audience:
+For the technical audience I demonstrated the underlying functionality and system processes of the glh prototype focusing on how the application operates across both the frontend and backend.
+The purpose of this demonstration was to show how the key fatures have been implemented and how data flows between components. This included explaining how the react frontend communicates with the express backend through api endpoints as well as how data is stored and updated within the json based database.
+Technical materials included:
+•	A walkthrough of the backend routes such as product retrieval, login/signup authentication and checkout process
+•	Demonstrate how jwt authentication is used to manage user sessions and role based access
+•	Explanation of how th checkout process updates stock levels and creates order records
+•	Overview of the producer dashboard including how products are added, edited and deleted via the api calls
+•	Example of how data is stored and retrieved from the json file using server side logic
+This allowed technical users to evaluate functional reliability , data consistency and system structer. It also provided them with enough detail to identify potential issue in logic, security or performance.
+
+Demonstration for non technical audience:
+For non technical users I presented the prototype through a simple user focused walkthrough that avoided technical terminology and focused on the overall experience of using the system.
+The prototype was demonstrated using a guided walkthrough of the main user journey including browsing products, adding items to the cart and completing the checkout process. Visual elements such as the product listing category filters and navigation bar were highlighted to show how users interacted with the system.
+I avoided complex terminology by describing features in terms of their purpose rather than how they are implemented for example instead of explaining api calls or data storage, I focused on what the user can do such as view productsm add items to your basket and place an order.
+The demonstration also included:
+•	Showing how users can register and log in
+•	demonstrating how the cart updates when items are added or removed 
+•	explaining the checkout options and how users enter their details
+•	briefly showing the producer dashboard from a user perspective to demonstrate how producers manage their products
+the focus was on demonstrating user benefits such as ease of navigation, clarity of information and simplicity of completing tasks. This ensures that non technical users could provide meaningful feedback on usability and overall experience without being affected by technical complexity.
+
+4.gathering and recording feedback
+Collection process:
+Feedback was collected using a structured user acceptance testing approach to ensure a consistent and reliable evaluation of the prototype. The testing process was divided into separate sessions for technical and non technical users to ensure feedback reflected different levels of system understanding.
+All participants were given the same core introduction to the system before completeting the set of tasks based on their role. Non technical users focused on usability and user tasks while technical users focused on system functionality and implementation behaviour.
+Tasks completed during testing:
+Non technical users:
+•	brows products using category filters
+•	view product details
+•	add and remove items from the cart
+•	complete checkout process
+•	navigate between pages using the TopBar
+technical users:
+•	test authentication system
+•	evaluate api driven product retrieval
+•	test checkout logic using stock reduction and order creation
+•	review producer dashboard CRUD functionality
+•	check role based access control
+
+Questionaire design:
+A structured questionair was used to collect both quantitative and qualitative data.
+The  questionnaire contained 50 questions 40 non technical and 10 technical questions.
+Technical users answer all 50 questions while non technical users only answered the 40 usability based questions
+This approach ensured both groups contributed to shared usability metrics while technical users also provided deeper system level feedback
+
+Recording the feedback:
+All feeback was recorded in a structured format to support analysis in task 3b
+Quantitative data:
+•	1-5 rating was used for all questionnaire items
+•	Scores were recorded in a spreadsheet to identify averages and trends
+•	Usability scores were grouped under navigation, checkout and product interaction
+
+
+Qualitative data:
+open ended responses were summarised into themes such as:
+•	Navigation clarity
+•	Checkout experience
+•	System responsiveness
+•	Feature understanding
+
+Technical feedback:
+Recorded using structured issue tracking format:
+•	Feature tested
+•	Expected behaviour
+•	Issue description
+Example fee
